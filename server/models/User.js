@@ -22,15 +22,15 @@ const userSchema = new Schema(
       required: true,
     },
     // set savedBooks to be an array of data that adheres to the bookSchema
-    //savedBooks: [bookSchema],
+    savedBooks: [bookSchema],
     // updated this from savedBooks: [bookSchema], to belowo
-    savedBooks: [
-      {
-        type: Schema.Types.ObjectId,
-        // does this need to ../client/book?
-        ref: "Book",
-      },
-    ],
+    // savedBooks: [
+    //   {
+    //     type: Schema.Types.ObjectId,
+    //     // does this need to ../client/book?
+    //     ref: "Book",
+    //   },
+    // ],
   },
   // set this to use virtual below
   {

@@ -1,15 +1,17 @@
-const { User } = require('../models');
-const bookSchema = require('../models/Book');
+const { User } = require("../models");
+const bookSchema = require("../models/Book");
+const { AuthenticationError } = require("apollo-server-express");
 
 const resolvers = {
   // This querry should pull back the user with bookID
   Query: {
-    users: async (username) => {
-      return User.find(username).populate("BookID");
-    },
+    // users: async (username) => {
+    //   return User.find(username).populate("BookID");
+    // },
     me: async (parent, context) => {
       if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate("book");
+        const userData = await User.findOne({ _id: context.user._id });
+        return userData;
       }
       throw new AuthenticationError("You need to be logged in!");
     },
@@ -23,7 +25,7 @@ const resolvers = {
       return token, user;
     },
     //login functionality
-    Login: async (parent, { email, password }) => {
+    loginUser: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
       if (!user) {
         throw new AuthenticationError("No user found with this email address");
