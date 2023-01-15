@@ -1,3 +1,6 @@
+//create a resolver schema
+// type defs
+
 const router = require('express').Router();
 const {
   createUser,
@@ -11,12 +14,13 @@ const {
 const { authMiddleware } = require('../../utils/auth');
 
 // put authMiddleware anywhere we need to send a token for verification of user
-router.route('/').post(createUser).put(authMiddleware, saveBook);
 
-router.route('/login').post(login);
+router.route('/').post(createUser).put(authMiddleware, saveBook); // create mutations
 
-router.route('/me').get(authMiddleware, getSingleUser);
+router.route('/login').post(login); // create mutations
 
-router.route('/books/:bookId').delete(authMiddleware, deleteBook);
+router.route('/me').get(authMiddleware, getSingleUser);// create mutations
+
+router.route('/books/:bookId').delete(authMiddleware, deleteBook);// create mutations
 
 module.exports = router;

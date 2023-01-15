@@ -1,4 +1,5 @@
 // route to get logged in user's info (needs the token)
+// created query in typedefs 
 export const getMe = (token) => {
   return fetch('/api/users/me', {
     headers: {
@@ -7,7 +8,7 @@ export const getMe = (token) => {
     },
   });
 };
-
+//created a mutation for this in typedefs called createUser
 export const createUser = (userData) => {
   return fetch('/api/users', {
     method: 'POST',
@@ -17,7 +18,7 @@ export const createUser = (userData) => {
     body: JSON.stringify(userData),
   });
 };
-
+// created mutation in typdefs called loginUser
 export const loginUser = (userData) => {
   return fetch('/api/users/login', {
     method: 'POST',
@@ -29,6 +30,7 @@ export const loginUser = (userData) => {
 };
 
 // save book data for a logged in user
+// created mutation for this in typedefs called saveBook
 export const saveBook = (bookData, token) => {
   return fetch('/api/users', {
     method: 'PUT',
@@ -41,6 +43,7 @@ export const saveBook = (bookData, token) => {
 };
 
 // remove saved book data for a logged in user
+// Created a mutation for this called deleteBook
 export const deleteBook = (bookId, token) => {
   return fetch(`/api/users/books/${bookId}`, {
     method: 'DELETE',
