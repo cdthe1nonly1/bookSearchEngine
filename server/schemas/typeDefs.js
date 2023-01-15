@@ -1,25 +1,37 @@
 const { gql } = require('apollo-server-express');
-//added in the types based off models in the client folder
-// added notes in API to where this came from.
+//added the const typdefs off the models user, and book and the BookInput based off data that will be added to pages.
+// added notes in API to where to link the mutations from.
+
 
 //should we add ! as a required?
 const typeDefs = gql`
   type User {
-    _id: ID
-    username: String
-    email: String
-    password: String
+    _id: ID!
+    username: String!
+    email: String!!
+    bookCount: Int
     savedBooks: [Book]
   }
+ 
 
+ 
   type Book {
-    authors: String
+    bookId: String!
+    authors: String!
     description: String
-    bookID: String
     image: String
     link: String
     title: String
   }
+
+   input BookInput {
+        bookId: String
+        authors: [String]
+        description: String
+        title: String
+        image: String
+        link: String
+    }
 
     type Auth {
     token: ID!
@@ -33,10 +45,10 @@ const typeDefs = gql`
 
   type Mutation {
 
-    createUser(username: String!, email: String!, password: String!): User
+    createUser(username: String!, email: String!, password: String!): Auth
     loginUser(email: String!, password: String!): Auth
-    saveBook(author: String!, description: String!, bookID: String!, image: String!, title: String!): User
-    deleteBook(userId: ID!, bookId: String!): User
+    saveBook(bookData: BookInput!): User
+    deleteBook(bookId: ID!): User
     
   }
 `;
