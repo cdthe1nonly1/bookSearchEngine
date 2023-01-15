@@ -1,5 +1,4 @@
-//create a resolver schema
-// type defs
+//create a schema for typdefs and resolvers to replace this.
 
 const router = require('express').Router();
 const {
