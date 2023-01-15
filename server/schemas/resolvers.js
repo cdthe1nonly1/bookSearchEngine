@@ -1,5 +1,6 @@
+const { signToken } = require("../utils/auth");
 const { User } = require("../models");
-const bookSchema = require("../models/Book");
+//const bookSchema = require("../models/Book");
 const { AuthenticationError } = require("apollo-server-express");
 
 const resolvers = {
@@ -8,10 +9,11 @@ const resolvers = {
     // users: async (username) => {
     //   return User.find(username).populate("BookID");
     // },
-    me: async (parent, context) => {
+    me: async (parent, args, context) => {
       if (context.user) {
-        const userData = await User.findOne({ _id: context.user._id });
-        return userData;
+        return await User.findOne({ _id: context.user._id }).populate(
+          "savedBooks"
+        );
       }
       throw new AuthenticationError("You need to be logged in!");
     },
@@ -22,7 +24,7 @@ const resolvers = {
     createUser: async (parent, { username, email, password }) => {
       const user = await User.create({ username, email, password });
       const token = signToken(user);
-      return token, user;
+      return { token, user };
     },
     //login functionality
     loginUser: async (parent, { email, password }) => {
@@ -30,7 +32,7 @@ const resolvers = {
       if (!user) {
         throw new AuthenticationError("No user found with this email address");
       }
-      const corretPw = await user.isCorrectPassword(password);
+      const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
         throw new AuthenticationError("Incorrect credentials");
@@ -39,40 +41,37 @@ const resolvers = {
 
       return { token, user };
     },
-    // add a book to user
-    // Notes from Charles I wrote this the best I could, but I struggled with this and not confident it is correct.
-    saveBook: async (
-      parent,
-      { author, description, bookID, image, title },
-      context
-    ) => {
+    // updated this section.
+
+    // look to see if we can change bookData to another name.
+
+    // this section looks for the signed in user and pushes the books that this user has.
+    saveBook: async (parent, { bookData }, context) => {
       if (context.user) {
-        const savedBook = await Book.create({
-          author,
-          description,
-          bookID,
-          image,
-          title,
-        });
-        await User.findOneAndUpdate(
+        return User.findOneAndUpdate(
           { _id: context.user._id },
-          { $addToSet: { book: bookID } }
+          {
+            $push: { savedBooks: bookData },
+          },
+          {
+            new: true,
+            runValidators: true,
+          }
         );
-        return book;
       }
+      //Requires the user to be logged in to exectute this mutation.
+      throw new AuthenticationError("You need to be logged in!");
     },
-    // Notes from Charles I wrote this the best I could, but I struggled with this and not confident it is correct.
-    deleteBook: async (parent, { bookID }, context) => {
+    //This will check that user is logged in and find the book by ID and delete that book from users profile.
+    deleteBook: async (parent, { bookId }, context) => {
       if (context.user) {
-        const thought = await Book.findOneAndDelete({
-          _id: bookID,
-        });
-        await User.findOneAndUpdate(
-          { _id: context.user.id },
-          { $pull: { bookID } }
+        return User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $pull: { savedBooks: { bookId: bookId } } },
+          { new: true }
         );
-        return user;
       }
+      // error message if the user is not signed in.
       throw new AuthenticationError("You need to be logged in!");
     },
   },
