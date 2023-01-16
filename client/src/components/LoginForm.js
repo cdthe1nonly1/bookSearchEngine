@@ -8,7 +8,7 @@ import { useMutation, useQuery } from "@apollo/client";
 
 const LoginForm = () => {
   const [login, { error }] = useMutation(LOGIN_USER);
-  const [userFormData, setUserFormData] = useState({ email: "", password: "" });
+  const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
@@ -28,7 +28,7 @@ const LoginForm = () => {
     }
 
     try {
-      const { data } = await login({ variables: { ...userFormData } });
+      const { data } = await login({ variables: { ...userFormData}});
 
       Auth.login(data.login.token);
     } catch (err) {
@@ -37,9 +37,9 @@ const LoginForm = () => {
     }
 
     setUserFormData({
-      username: "",
-      email: "",
-      password: "",
+      username: '',
+      email: '',
+      password: '',
     });
   };
 

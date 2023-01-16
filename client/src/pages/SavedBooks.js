@@ -7,7 +7,7 @@ import {
   Button,
 } from "react-bootstrap";
 
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate} from "react-router-dom";
 //import { getMe, deleteBook } from '../utils/API';
 import Auth from "../utils/auth";
 //graphql
@@ -19,7 +19,7 @@ import { DELETE_BOOK } from "../utils/mutations";
 const SavedBooks = () => {
   const [userData, setUserData] = useState({});
   const { loading, data } = useQuery(GET_ME);
-  const [deleteBook, { error }] = useMutation(DELETE_BOOK);
+  const [deleteBook] = useMutation(DELETE_BOOK);
 
   //
   // const userDataLength = Object.keys(userData).length;
@@ -72,7 +72,7 @@ const SavedBooks = () => {
     }
 
     try {
-      const response = await deleteBook({ variables: { bookId } });
+      const { data } = await deleteBook({ variables: { bookId } });
 
       // if (!response.ok) {
       //   throw new Error('something went wrong!');
@@ -83,6 +83,7 @@ const SavedBooks = () => {
         ...userData,
         ["savedBooks"]: [...data.removeBook.savedBooks],
       });
+      console.log(data);
 
       // upon success, remove book's id from localStorage
       deleteBookId(bookId);
