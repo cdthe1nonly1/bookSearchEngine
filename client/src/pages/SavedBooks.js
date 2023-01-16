@@ -22,7 +22,11 @@ const SavedBooks = () => {
   const [deleteBook, { error }] = useMutation(DELETE_BOOK);
 
   //
-  const userDataLength = Object.keys(userData).length;
+  // const userDataLength = Object.keys(userData).length;
+    useEffect(() => {
+      setUserData(data?.me || {});
+    }, [data]);
+
   if (!Auth.loggedIn()) {
     return <Navigate to="/" />;
   }
@@ -88,9 +92,9 @@ const SavedBooks = () => {
   };
 
   // if data isn't here yet, say so
-  if (!userDataLength) {
-    return <h2>LOADING...</h2>;
-  }
+  // if (!userDataLength) {
+  //   return <h2>LOADING...</h2>;
+  // }
 
   return (
     <>
