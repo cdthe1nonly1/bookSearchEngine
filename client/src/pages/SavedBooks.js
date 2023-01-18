@@ -38,30 +38,6 @@ const SavedBooks = () => {
   if (!userData?.username) {
     return <h4>You must be logged in to view your books.</h4>;
   }
-  // useEffect(() => {
-  //   const getUserData = async () => {
-  //     try {
-  //       const token = Auth.loggedIn() ? Auth.getToken() : null;
-
-  //       if (!token) {
-  //         return false;
-  //       }
-
-  //       const response = await getMe(token);
-
-  //       if (!response.ok) {
-  //         throw new Error('something went wrong!');
-  //       }
-
-  //       const user = await response.json();
-  //       setUserData(user);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   };
-
-  //   getUserData();
-  // }, [userDataLength]);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -73,10 +49,6 @@ const SavedBooks = () => {
 
     try {
       const { data } = await deleteBook({ variables: { bookId } });
-
-      // if (!response.ok) {
-      //   throw new Error('something went wrong!');
-      // }
 
       // const updatedUser = await response.json();
       setUserData({
@@ -92,10 +64,6 @@ const SavedBooks = () => {
     }
   };
 
-  // if data isn't here yet, say so
-  // if (!userDataLength) {
-  //   return <h2>LOADING...</h2>;
-  // }
 
   return (
     <>
