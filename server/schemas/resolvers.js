@@ -11,9 +11,7 @@ const resolvers = {
     // },
     me: async (parent, args, context) => {
       if (context.user) {
-        return await User.findOne({ _id: context.user._id }).populate(
-          "savedBooks"
-        );
+        return await User.findOne({ _id: context.user._id });
       }
       throw new AuthenticationError("You need to be logged in!");
     },

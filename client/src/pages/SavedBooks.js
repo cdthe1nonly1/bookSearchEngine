@@ -7,7 +7,7 @@ import {
   Button,
 } from "react-bootstrap";
 
-import { Navigate} from "react-router-dom";
+import { Navigate } from "react-router-dom";
 //import { getMe, deleteBook } from '../utils/API';
 import Auth from "../utils/auth";
 //graphql
@@ -23,9 +23,9 @@ const SavedBooks = () => {
 
   //
   // const userDataLength = Object.keys(userData).length;
-    useEffect(() => {
-      setUserData(data?.me || {});
-    }, [data]);
+  useEffect(() => {
+    setUserData(data?.me || {});
+  }, [data]);
 
   if (!Auth.loggedIn()) {
     return <Navigate to="/" />;
@@ -106,14 +106,14 @@ const SavedBooks = () => {
       </Jumbotron>
       <Container>
         <h2>
-          {userData.savedBooks.length
-            ? `Viewing ${userData.savedBooks.length} saved ${
-                userData.savedBooks.length === 1 ? "book" : "books"
+          {userData.savedBooks?.length
+            ? `Viewing ${userData.savedBooks?.length} saved ${
+                userData.savedBooks?.length === 1 ? "book" : "books"
               }:`
             : "You have no saved books!"}
         </h2>
         <CardColumns>
-          {userData.savedBooks.map((book) => {
+          {userData.savedBooks?.map((book) => {
             return (
               <Card key={book.bookId} border="dark">
                 {book.image ? (
