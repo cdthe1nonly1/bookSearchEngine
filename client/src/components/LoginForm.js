@@ -2,29 +2,34 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 //changed this from API to mutations
+import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../utils/mutations";
+
 import Auth from "../utils/auth";
-import { useMutation} from "@apollo/client";
+
 
 const LoginForm = () => {
-  const [login, { error }] = useMutation(LOGIN_USER);
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
-useEffect(()=>{
-  if (error){
-         setShowAlert(true);
-  }else
-  {
+  const [login, { error }] = useMutation(LOGIN_USER);
+
+useEffect(() => {
+  if (error) {
+    setShowAlert(true);
+  } else {
     setShowAlert(false);
   }
-},[error])
+}, [error]);
+
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
+
+
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -38,21 +43,26 @@ useEffect(()=>{
     }
 
     try {
-      const { data } = await login({ variables: { ...userFormData}});
+      const { data } = await login({
+        variables: { ...userFormData },
+      });
 
+      console.log(data);
       Auth.login(data.login.token);
     } catch (err) {
       console.error(err);
     }
 
+    // clear form values
     setUserFormData({
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     });
   };
 
+
   return (
-    <>
+     <>
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
         <Alert
           dismissible
@@ -100,6 +110,7 @@ useEffect(()=>{
         </Button>
       </Form>
     </>
+
   );
 };
 
