@@ -15,11 +15,14 @@ const resolvers = {
       }
       throw new AuthenticationError("You need to be logged in!");
     },
+    users: async () => {
+      return User.find();
+    },
   },
   // one for each listed in the tyedefs
   Mutation: {
     // create a user
-    createUser: async (parent, { username, email, password }) => {
+    addUser: async (parent, { username, email, password }) => {
       const user = await User.create({ username, email, password });
       const token = signToken(user);
       return { token, user };
@@ -61,7 +64,7 @@ const resolvers = {
       throw new AuthenticationError("You need to be logged in!");
     },
     //This will check that user is logged in and find the book by ID and delete that book from users profile.
-    deleteBook: async (parent, { bookId }, context) => {
+    removeBook: async (parent, { bookId }, context) => {
       if (context.user) {
         return User.findOneAndUpdate(
           { _id: context.user._id },

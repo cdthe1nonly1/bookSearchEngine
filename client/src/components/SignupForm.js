@@ -6,7 +6,7 @@ import Auth from "../utils/auth";
 import { useMutation } from "@apollo/client";
 
 const SignupForm = () => {
-  const [createUser] = useMutation(CREATE_USER);
+  const [addUser] = useMutation(CREATE_USER);
   // set initial form state
   const [userFormData, setUserFormData] = useState({
     username: "",
@@ -34,13 +34,13 @@ const SignupForm = () => {
     }
 
     try {
-      const { data } = await createUser({ variables: { ...userFormData } });
+      const { data } = await addUser({ variables: { ...userFormData } });
 
       // if (!response.ok) {
       //   throw new Error('something went wrong!');
       // }
 
-      Auth.login(data.createUser.token);
+      Auth.login(data.addUser.token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);

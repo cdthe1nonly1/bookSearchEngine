@@ -5,7 +5,7 @@ const { gql } = require("apollo-server-express");
 //should we add ! as a required?
 const typeDefs = gql`
   type User {
-    _id: ID!
+    _id: ID
     username: String!
     email: String!
     bookCount: Int
@@ -34,13 +34,14 @@ const typeDefs = gql`
   }
   type Query {
     me: User
+    users: [User]!
   }
 
   type Mutation {
-    createUser(username: String!, email: String!, password: String!): Auth
+    addUser(username: String!, email: String!, password: String!): Auth
     loginUser(email: String!, password: String!): Auth
     saveBook(bookData: BookInput!): User
-    deleteBook(bookId: ID!): User
+    removeBook(bookId: ID!): User
   }
 `;
 

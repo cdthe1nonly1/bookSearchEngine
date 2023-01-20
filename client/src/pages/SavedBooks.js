@@ -11,7 +11,7 @@ import { Navigate } from "react-router-dom";
 //import { getMe, deleteBook } from '../utils/API';
 import Auth from "../utils/auth";
 //graphql
-import { deleteBookId } from "../utils/localStorage";
+import { removeBookId } from "../utils/localStorage";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_ME } from "../utils/queries";
 import { DELETE_BOOK } from "../utils/mutations";
@@ -19,7 +19,7 @@ import { DELETE_BOOK } from "../utils/mutations";
 const SavedBooks = () => {
   const [userData, setUserData] = useState({});
   const { loading, data } = useQuery(GET_ME);
-  const [deleteBook] = useMutation(DELETE_BOOK);
+  const [removeBook] = useMutation(DELETE_BOOK);
 
   //
   // const userDataLength = Object.keys(userData).length;
@@ -48,17 +48,17 @@ const SavedBooks = () => {
     }
 
     try {
-      const { data } = await deleteBook({ variables: { bookId } });
+      const { data } = await removeBook({ variables: { bookId } });
 
       // const updatedUser = await response.json();
       setUserData({
         ...userData,
-        ["savedBooks"]: [...data.removeBook.savedBooks],
+        "savedBooks": [...data.removeBook.savedBooks],
       });
       console.log(data);
 
       // upon success, remove book's id from localStorage
-      deleteBookId(bookId);
+      removeBookId(bookId);
     } catch (err) {
       console.error(err);
     }

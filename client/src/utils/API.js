@@ -8,8 +8,8 @@ export const getMe = (token) => {
     },
   });
 };
-//created a mutation for this in typedefs called createUser
-export const createUser = (userData) => {
+//created a mutation for this in typedefs called addUser
+export const addUser = (userData) => {
   return fetch('/api/users', {
     method: 'POST',
     headers: {
